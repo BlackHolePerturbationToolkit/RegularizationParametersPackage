@@ -1,0 +1,171 @@
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"ParentDirectory", "[", 
+    RowBox[{"NotebookDirectory", "[", "]"}], "]"}], "]"}], ";"}]], "Input",
+ CellLabel->
+  "In[538]:=",ExpressionUUID->"ea585bdd-750a-4086-9ad4-a0cd733b89e4"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"docDir", "=", 
+  RowBox[{"FileNameJoin", "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"FileNameDrop", "[", 
+      RowBox[{
+       RowBox[{"FindFile", "[", "\"\<Regularisation`\>\"", "]"}], ",", 
+       RowBox[{"-", "2"}]}], "]"}], ",", "\"\<Documentation\>\""}], "}"}], 
+   "]"}]}]], "Input",
+ CellLabel->
+  "In[539]:=",ExpressionUUID->"d6ef592a-39d3-4d01-8d7e-af94b633b701"],
+
+Cell[BoxData[
+ RowBox[{"FileNameJoin", "[", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{"FileNameDrop", "[", 
+     RowBox[{"$Failed", ",", 
+      RowBox[{"-", "2"}]}], "]"}], ",", "\<\"Documentation\"\>"}], "}"}], 
+  "]"}]], "Output",
+ CellLabel->"Out[539]=",ExpressionUUID->"0eb5bf34-1742-42d0-ba01-61bd013d4497"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Short", "[", 
+  RowBox[{
+   RowBox[{"docFiles", "=", 
+    RowBox[{"Select", "[", 
+     RowBox[{
+      RowBox[{"FileNames", "[", 
+       RowBox[{"\"\<*\>\"", ",", "docDir", ",", "Infinity"}], "]"}], ",", 
+      RowBox[{
+       RowBox[{"!", 
+        RowBox[{"DirectoryQ", "[", "#", "]"}]}], "&"}]}], "]"}]}], ",", 
+   "10"}], "]"}]], \
+"Input",ExpressionUUID->"7fc0ee29-575d-42b7-af6c-2093c60510e6"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"{", 
+   RowBox[{"\<\"/Users/barry/Library/Mathematica/Applications/Teukolsky/\
+Documentation/English/Guides/Teukolsky.nb\"\>", 
+    ",", "\<\"/Users/barry/Library/Mathematica/Applications/Teukolsky/\
+Documentation/English/ReferencePages/Symbols/RenormalizedAngularMomentum.nb\"\
+\>", ",", \
+"\<\"/Users/barry/Library/Mathematica/Applications/Teukolsky/Documentation/\
+English/ReferencePages/Symbols/TeukolskyModeObject.nb\"\>", ",", 
+    RowBox[{"\[LeftSkeleton]", "4", "\[RightSkeleton]"}], 
+    ",", "\<\"/Users/barry/Library/Mathematica/Applications/Teukolsky/\
+Documentation/English/ReferencePages/Symbols/TeukolskySourceObject.nb\"\>", 
+    ",", "\<\"/Users/barry/Library/Mathematica/Applications/Teukolsky/\
+Documentation/English/Tutorials/Teukolsky.nb\"\>"}], "}"}],
+  Short[#, 
+   10]& ]], "Output",ExpressionUUID->"add2161a-ab71-4474-82fe-5f018c1015b9"]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"DeleteFile", "[", "docFiles", 
+  "]"}]], "Input",ExpressionUUID->"b1c00f28-8ad7-407f-96ad-1d270a4e8ff7"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"<<", 
+  "\"\<Source/GenerateDocumentation.m\>\""}]], \
+"Input",ExpressionUUID->"b2d89166-1bf3-42ee-9d4b-27ddca24f152"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["\<\"Building symbol reference pages\"\>"], \
+"Print",ExpressionUUID->"ea1f0507-c9c3-4d8e-8b50-43b3c854c45d"],
+
+Cell[BoxData["\<\"RenormalizedAngularMomentum\"\>"], \
+"Print",ExpressionUUID->"085ea2e2-e0e4-44e5-abac-39483e56d58a"],
+
+Cell[BoxData["\<\"TeukolskyModeObject\"\>"], \
+"Print",ExpressionUUID->"ca0ae68b-e0a7-4a3f-9275-bf0788fee10a"],
+
+Cell[BoxData["\<\"TeukolskyPointParticleMode\"\>"], \
+"Print",ExpressionUUID->"feba3967-5564-4b2e-b985-cef50e74fccc"],
+
+Cell[BoxData["\<\"TeukolskyRadial\"\>"], \
+"Print",ExpressionUUID->"03e9e2f7-fbe1-435e-9403-2cf80cf895d9"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Removing \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", "\<\"R\"\>", "}"}]}],
+  SequenceForm["Removing ", {"R"}],
+  Editable->
+   False]], "Print",ExpressionUUID->"26a7ff3b-a648-45d4-9cff-bf92eb0d6c1d"],
+
+Cell[BoxData["\<\"TeukolskyRadialFunction\"\>"], \
+"Print",ExpressionUUID->"7e02c13a-ec5d-4a87-8e32-fe5e3269f530"],
+
+Cell[BoxData["\<\"TeukolskyPointParticleSource\"\>"], \
+"Print",ExpressionUUID->"0735c955-cc3d-45f7-a026-e212f8490b6f"],
+
+Cell[BoxData["\<\"TeukolskySourceObject\"\>"], \
+"Print",ExpressionUUID->"ba5ffe94-b1d0-4b87-a25c-65c0445a04ae"],
+
+Cell[BoxData["\<\"Building guides\"\>"], \
+"Print",ExpressionUUID->"129d268e-a15e-4530-b643-1c7404967088"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Creating \"\>", 
+   "\[InvisibleSpace]", \
+"\<\"/Users/barry/Research/Code/Teukolsky/Documentation/English/Guides\"\>"}],
+  
+  SequenceForm[
+  "Creating ", 
+   "/Users/barry/Research/Code/Teukolsky/Documentation/English/Guides"],
+  Editable->
+   False]], "Print",ExpressionUUID->"e21fd23b-d63a-454b-abaf-6c4d66f856e5"],
+
+Cell[BoxData["\<\"Building tutorials\"\>"], \
+"Print",ExpressionUUID->"73bc42de-9614-43d3-9d5b-a4960fdd2a6c"],
+
+Cell[BoxData["\<\"Source/Documentation/English/Tutorials/Teukolsky.md\"\>"], \
+"Print",ExpressionUUID->"f175176f-2d60-4f81-b582-bdcff01d51bf"],
+
+Cell[BoxData[
+ InterpretationBox[
+  RowBox[{"\<\"Removing \"\>", "\[InvisibleSpace]", 
+   RowBox[{"{", 
+    RowBox[{"\<\"a\"\>", ",", "\<\"k\"\>", ",", "\<\"l\"\>", ",", "\<\"m\"\>",
+      ",", "\<\"mode\"\>", ",", "\<\"n\"\>", ",", "\<\"orbit\"\>", 
+     ",", "\<\"r\"\>", ",", "\<\"R\"\>", ",", "\<\"r0\"\>", 
+     ",", "\<\"Rdata\"\>", ",", "\<\"result\"\>", ",", "\<\"s\"\>"}], "}"}]}],
+  
+  SequenceForm[
+  "Removing ", {
+   "a", "k", "l", "m", "mode", "n", "orbit", "r", "R", "r0", "Rdata", 
+    "result", "s"}],
+  Editable->
+   False]], "Print",ExpressionUUID->"9b74b453-1ab3-42d6-9715-1ffe092b4f1c"],
+
+Cell[BoxData["\<\"Indexing Documentation\"\>"], \
+"Print",ExpressionUUID->"16d36413-daee-435e-998a-ff2beaaa92bd"],
+
+Cell[BoxData["\<\"Done\"\>"], \
+"Print",ExpressionUUID->"cf5ec94e-a100-44c5-a719-3f4f47d0b91b"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{740, 863},
+WindowMargins->{{Automatic, 245}, {Automatic, 0}},
+PrivateNotebookOptions->{"FileOutlineCache"->False,
+"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
+ShowSelection->True,
+TrackCellChangeTimes->False,
+FrontEndVersion->"13.0 for Mac OS X ARM (64-bit) (December 2, 2021)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"72b1975e-132d-4317-afd3-a5dc7fa937b0"
+]
+

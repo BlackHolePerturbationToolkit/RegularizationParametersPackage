@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Acknowledgements*)
 
 
@@ -29,15 +29,15 @@
 (************************************************************************)
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Set-up*)
 
 
-(* ::Subsubsection::Closed:: *)
+(* ::Subsubsection:: *)
 (*Package name and function*)
 
 
-BeginPackage["RegularizationParameters`"];
+BeginPackage["Regularisation`"];
 
 
 ElFactor::usage="Factor of \[ScriptL] that comes before A, B and D.";
@@ -50,29 +50,39 @@ It requires 10 input parameters:
 RPscalarD::usage="Function to return fourth regularisation parameters \!\(\*SubscriptBox[\(F\), \(a[2]\)]\) or \!\(\*SubscriptBox[\(D\), \(a\)]\) for all 4 components {t,r,\[Theta],\[Phi]}. 
 It requires 10 input parameters: 
 		{Energy, Angular Momentum, CarterConstant, spin, mass, radius, inclination, sign of \[CapitalDelta]r, sign of \!\(\*SuperscriptBox[\(u\), \(r\)]\),sign of \!\(\*SuperscriptBox[\(u\), \(\[Theta]\)]\)}.";
-citeScalarSF::usage="Function that returns string with necessary citations based on what self-force parameters used.
+RegParam::usage="enter later";
+cite::usage="Function that returns string with necessary citations based on what self-force parameters used.
 		Input is {spin (0 or not 0), eccentricity (0 or not 0), inclination (0 for equatorial, non zero otherwise), number of non-zero parameters used}.";
+
+
+(* ::Subsubsection:: *)
+(*Error Messages*)
+
+
+RegParam::errorFn="Error: Please input one of the designated function options: \"\!\(\*SubscriptBox[\(F\), \(a\)]\)\", \"\!\(\*SubscriptBox[\(F\), \(t\)]\)\", \"\!\(\*SubscriptBox[\(F\), \(r\)]\)\", \"\!\(\*SubscriptBox[\(F\), \(\[Theta]\)]\)\", \"\!\(\*SubscriptBox[\(F\), \(\[Phi]\)]\)\".";
+RegParam::errorFieldOrder="Error: Please enter a field and/or order number from the available options: field={\"Scalar\"}, order={-1,0,1,2}.";
+cite::errorCFn="Error: Please input one of the designated function options and/or field options: Function={\"\!\(\*SubscriptBox[\(F\), \(a\)]\)\"}, Field={\"Scalar\"}.";
 
 
 Begin["`Private`"];
 
 
-(* ::Section::Closed:: *)
+(* ::Section:: *)
 (*Regularisation Parameter Functions*)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*\[ScriptL] function*)
 
 
-ElFactor[kk_,l_]:=((2 l +1))/Product[(2l-2n),{n,-(1/2)(kk+1),1/2 (kk-1)}];
+ElFactor[kk_Integer/;kk>-2,l_]:=((2 l +1))/Product[(2l-2n),{n,-(1/2)(kk+1),1/2 (kk-1)}];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Functions for scalar parameters*)
 
 
-SetDirectory["~/Documents/Research/Code/RegularizationParameters"];
+(*SetDirectory[NotebookDirectory[]];*)
 
 
 Get["RPscalarA.wl"];
@@ -80,7 +90,33 @@ Get["RPscalarB.wl"];
 Get["RPscalarD.wl"];
 
 
-(* ::Section::Closed:: *)
+(* ::Subsection:: *)
+(*Wrapper of Regularisation functions*)
+
+
+RegParam[field_String,function_String,order_Integer,parameters_List]:=Module[{},
+Which[
+	field=="Scalar"&&order==-1,
+		Which[function=="\!\(\*SubscriptBox[\(F\), \(a\)]\)",RPscalarA@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(t\)]\)",RPscalarAt@@parameters,
+			function=="\!\(\*SubscriptBox[\(F\), \(r\)]\)",RPscalarAr@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(\[Theta]\)]\)"||function=="\!\(\*SubscriptBox[\(F\), \(\[Phi]\)]\)",0,True,Message[RegParam::errorFn]],
+	field=="Scalar"&&order==0,
+		Which[function=="\!\(\*SubscriptBox[\(F\), \(a\)]\)",RPscalarB@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(t\)]\)",RPscalarBt@@parameters,
+			function=="\!\(\*SubscriptBox[\(F\), \(r\)]\)",RPscalarBr@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(\[Theta]\)]\)",RPscalarB\[Theta]@@parameters,
+			function=="\!\(\*SubscriptBox[\(F\), \(\[Phi]\)]\)",RPscalarB\[Phi]@@parameters,True,Message[RegParam::errorFn]],
+	field=="Scalar"&&order==1,
+		Which[function=="\!\(\*SubscriptBox[\(F\), \(a\)]\)",{0,0,0,0},function=="\!\(\*SubscriptBox[\(F\), \(t\)]\)",0,
+			function=="\!\(\*SubscriptBox[\(F\), \(r\)]\)",0,function=="\!\(\*SubscriptBox[\(F\), \(\[Theta]\)]\)",0,
+			function=="\!\(\*SubscriptBox[\(F\), \(\[Phi]\)]\)",0,True,Message[RegParam::errorFn]],
+	field=="Scalar"&&order==2,
+		Which[function=="\!\(\*SubscriptBox[\(F\), \(a\)]\)",RPscalarD@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(t\)]\)",RPscalarDt@@parameters,
+			function=="\!\(\*SubscriptBox[\(F\), \(r\)]\)",RPscalarDr@@parameters,function=="\!\(\*SubscriptBox[\(F\), \(\[Theta]\)]\)",RPscalarD\[Theta]@@parameters,
+			function=="\!\(\*SubscriptBox[\(F\), \(\[Phi]\)]\)",RPscalarD\[Phi]@@parameters,True,Message[RegParam::errorFn]],
+	True,Message[RegParam::errorFieldOrder]	
+]
+]
+
+
+(* ::Section:: *)
 (*Citations*)
 
 
@@ -111,7 +147,7 @@ citeCode[2]="@electronic{Heffernan:2022,
 citeCodeT=Table[citeCode[i],{i,2}];
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Scalar self-force*)
 
 
@@ -264,7 +300,7 @@ citeScalSchwCirc={citeScalarSchwCirc[1],citeScalarSchwCirc[2],citeScalarSchwGen[
 (**)
 
 
-(* ::Subsection::Closed:: *)
+(* ::Subsection:: *)
 (*Citation output*)
 
 
@@ -272,21 +308,29 @@ citeScalSchwCirc={citeScalarSchwCirc[1],citeScalarSchwCirc[2],citeScalarSchwGen[
 (*Self-force*)
 
 
-citeScalarSF[spin_,ecc_,theta_,n_]:=Module[{tab="",citns},
-If[spin==0,
-If[ecc!=0,
-tab=If[n-1>Length[citeScalSchwGen],citeScalSchwGen,citeScalSchwGen[[1;;n-1]]];
-,
-tab=If[n-1>Length[citeScalSchwCirc],citeScalSchwCirc,citeScalSchwCirc[[1;;n-1]]];
-],
-If[theta==0,
-tab=If[n-1>Length[citeScalKerrEccEq],citeScalKerrEccEq,citeScalKerrEccEq[[1;;n-1]]];,
-tab=If[n-1>Length[citeScalKerrGen],citeScalKerrGen,citeScalKerrGen[[1;;n-1]]];
-]
+cite[field_String,function_String,spin_,ecc_,theta_,n_]:=Module[{tab="",citns},
+
+Which[field=="Scalar"&&function=="\!\(\*SubscriptBox[\(F\), \(a\)]\)",
+	If[spin==0,
+		If[ecc!=0,
+			tab=If[n-1>Length[citeScalSchwGen],citeScalSchwGen,citeScalSchwGen[[1;;n-1]]];
+			,
+			tab=If[n-1>Length[citeScalSchwCirc],citeScalSchwCirc,citeScalSchwCirc[[1;;n-1]]];
+		],
+		If[theta==0,
+			tab=If[n-1>Length[citeScalKerrEccEq],citeScalKerrEccEq,citeScalKerrEccEq[[1;;n-1]]];
+			,
+			tab=If[n-1>Length[citeScalKerrGen],citeScalKerrGen,citeScalKerrGen[[1;;n-1]]];
+		]
+	];
+	citns=Flatten[Join[citeCodeT,tab]];
+	StringJoin[citns]
+	,
+	True,
+	Message[cite::errorCFn]
 ];
 
-citns=Flatten[Join[citeCodeT,tab]];
-StringJoin[citns]
+
 ]
 
 
